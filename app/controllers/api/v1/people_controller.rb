@@ -31,13 +31,6 @@ class Api::V1::PeopleController < ApplicationController
     
   end
 
-  # def create_affiliations(person, affiliations)
-  #   affiliations = affiliations.strip.split(',')
-  #   affiliations.each do |affiliation|
-  #     person.affiliations << Affiliation.create(name: affiliation.strip)
-  #   end
-  # end
-
   private
 
 

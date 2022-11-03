@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  root 'home#index'
+  
   resources :people
   resources :locations
   resources :affiliations
