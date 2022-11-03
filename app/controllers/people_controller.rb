@@ -1,4 +1,5 @@
 class PeopleController < ApplicationController
+  protect_from_forgery with: :null_session
   before_action :set_person, only: %i[ show edit update destroy ]
 
   # GET /people or /people.json
