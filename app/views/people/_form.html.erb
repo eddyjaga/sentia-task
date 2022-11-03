@@ -22,8 +22,18 @@
   </div>
 
   <div>
+    <%= form.label :location, style: "display: block" %>
+    <%= form.text_field :locations, value: person.locations.map(&:name).join(",") %>
+  </div>
+
+  <div>
     <%= form.label :species, style: "display: block" %>
     <%= form.text_field :species %>
+  </div>
+
+  <div>
+    <%= form.label :affiliation, style: "display: block" %>
+    <%= form.text_field :affiliations, value: person.affiliations.map(&:name).join(",") %>
   </div>
 
   <div>

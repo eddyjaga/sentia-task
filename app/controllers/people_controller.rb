@@ -21,7 +21,8 @@ class PeopleController < ApplicationController
 
   # POST /people or /people.json
   def create
-    @person = Person.new(person_params)
+    @person = Person.new(person_params.except(:locations, :affiliations))
+    create_or_delete_people_locations_affiations(@person, params[:person][:locations], params[:person][:affiliations])
 
     respond_to do |format|
       if @person.save
@@ -36,8 +37,9 @@ class PeopleController < ApplicationController
 
   # PATCH/PUT /people/1 or /people/1.json
   def update
+    create_or_delete_people_locations_affiations(@person, params[:person][:locations], params[:person][:affiliations])
     respond_to do |format|
-      if @person.update(person_params)
+      if @person.update(person_params.except(:locations, :affiliations))
         format.html { redirect_to person_url(@person), notice: "Person was successfully updated." }
         format.json { render :show, status: :ok, location: @person }
       else
@@ -59,12 +61,28 @@ class PeopleController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
+
+    def create_or_delete_people_locations_affiations(person, locations, affiliations)
+      person.person_locations.destroy_all
+      person.person_affiliations.destroy_all
+      locations = locations.strip.split(',')
+      affiliations = affiliations.strip.split(',')
+  
+      locations.each do |location|
+        person.locations << Location.find_or_create_by(name: location)
+      end
+
+      affiliations.each do |affiliation|
+        person.affiliations << Affiliation.find_or_create_by(name: affiliation)
+      end
+    end
+
     def set_person
       @person = Person.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.
     def person_params
-      params.require(:person).permit(:first_name, :last_name, :species, :gender, :weapon, :vehicle)
+      params.require(:person).permit(:first_name, :last_name, :species, :gender, :weapon, :vehicle, :locations, :affiliations)
     end
 end

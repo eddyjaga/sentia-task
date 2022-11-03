@@ -10,6 +10,12 @@
   </p>
 
   <p>
+    <%= person.locations.each do |location| %>
+    <span><%=  location.name %></span>
+    <% end %>
+  </p>
+
+  <p>
     <strong>Species:</strong>
     <%= person.species %>
   </p>
