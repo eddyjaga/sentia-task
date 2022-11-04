@@ -1,6 +1,7 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import ImportFile from './components/ImportFile';
+import TableList from './components/TableList';
 import { useState } from 'react';
 
 export const AppContext = React.createContext(null);
@@ -10,9 +11,15 @@ function App() {
     
     return (
         <AppContext.Provider value={{ latestPost, setLatestPost}}>
-            <div className="container">
-                <h1>Sentia coding test</h1>
-                <ImportFile />
+            <nav className="navbar navbar-light bg-light">
+              <a className="navbar-brand" href="">Sentia coding test</a>
+            </nav>
+
+            <div className="container mt-3">
+              <div className="row">
+                  <ImportFile />
+                  <TableList/>
+              </div>
             </div>
         </AppContext.Provider>
     )

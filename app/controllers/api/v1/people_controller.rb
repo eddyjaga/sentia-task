@@ -37,8 +37,8 @@ class Api::V1::PeopleController < ApplicationController
   def create_or_delete_people_locations_affiations(person, locations, affiliations)
     person.person_locations.destroy_all
     person.person_affiliations.destroy_all
-    locations = locations.strip.split(',')
-    affiliations = affiliations.strip.split(',')
+    locations = locations.strip.split(';')
+    affiliations = affiliations.strip.split(';')
 
     locations.each do |location|
       person.locations << Location.find_or_create_by(name: location.strip)
