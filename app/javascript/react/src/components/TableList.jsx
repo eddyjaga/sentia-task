@@ -52,7 +52,7 @@ function TableList() {
 
   return (
         <>
-            <form id="csv-form" className="col-md-6">
+            <form id="csv-form" className="col-md-6 col-xs-12">
                 <div className="input-group">
                     <input 
                     type="text" 
@@ -61,7 +61,7 @@ function TableList() {
                     <button className="btn btn-outline-secondary" type="button"><i className="bi bi-search"></i></button>
                 </div>
             </form>
-            <div className="col-md-12 mt-5">
+            <div className="col col-md-12 col-xs-12 mt-5">
                 <table className="table table-hover">
                 <thead>
                     <tr>

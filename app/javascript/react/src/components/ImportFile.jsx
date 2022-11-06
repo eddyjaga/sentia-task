@@ -1,13 +1,17 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import Axios from 'axios'
 
+const baseUrl = 'http://localhost:3000/api/v1/people'
+let success, error = 0
 const ImportFile = () => {
-    const [csvFile, setCsvFile] = useState();
+    const [csvFile, setCsvFile] = useState()
 
     const processCSV = (str, delim=',') => {
         // header
         const headers = splitHeaders(str)
         // rows
         const rows = str.slice(str.indexOf('\r\n')+1).split('\r\n');
+        
         const newArray = rows.map(row =>{
             if (row.indexOf('"') !== -1) row = replaceRange(row, row.indexOf('"')+1, row.indexOf('"',row.indexOf('"')+1,','))
             const values = splitFirstAndLastName(row.split(delim))
@@ -15,10 +19,10 @@ const ImportFile = () => {
                 obj[header] = values[i].trim();
                 return obj
             }, {})
-            return eachObject
+            Axios.post(baseUrl, eachObject).then(response=>{
+                
+           })
         })
-
-        console.log(newArray)
 
     }
 
@@ -50,7 +54,7 @@ const ImportFile = () => {
 
     }
     // to replace the string in some range
-    const replaceRange = (str, start, end, findStr=',', replacement=':') =>{
+    const replaceRange = (str, start, end, findStr=',', replacement=';') =>{
         return str.substring(0, start-1) + str.substring(start, end).replace(findStr, replacement) + str.substring(end+1);
     }
 
@@ -68,7 +72,7 @@ const ImportFile = () => {
     
 
     return (
-        <form id="csv-form" className="col col-md-6">
+        <form id="csv-form" className="col-md-6 col-xs-12">
             <div className="input-group">
                 <input
                     className="form-control"

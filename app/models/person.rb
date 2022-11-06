@@ -1,5 +1,5 @@
 class Person < ApplicationRecord
-    enum gender: { male: 0, m: 0, female: 1, f:1, other: 2 }
+    enum gender: { male: 0, m: 0, Male:0, M:0, female: 1, f:1, F:1, Female:1, other: 2, Other:2 }
 
     validates :first_name, presence: { message: "must be first name please" }
     validates :species, presence: {message: "must be species please"}
