@@ -1,6 +1,55 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import Axios from 'axios'
+import Locations from './Locations'
+import Affiliations from './Affiliations'
+
+const baseUrl = 'http://localhost:3000/api/v1/people'
+
+const capitalize = s => (s && s[0].toUpperCase() + s.slice(1)) || ""
 
 function TableList() {
+    const [people, setPeople] = useState([])
+    const [included, setIncluded] = useState([])
+
+    useEffect(()=>{
+        Axios.get(baseUrl)
+        .then(resp => {
+            setPeople(resp.data.data)
+            setIncluded(resp.data.included)
+        })
+        .catch(resp => console.log(resp))
+    }, [people.length])
+
+    const lists = people.map(person =>{
+
+        const locations = person.relationships.locations.data.map(location=>{
+            let attributes = ''
+            const locationAttributes = included.map(i =>{ if(i.type === location.type && i.id === location.id) attributes += i.attributes.name})
+            return attributes
+        })
+
+        const affiliations = person.relationships.affiliations.data.map(affiliation=>{
+            let attributes = ''
+            const affiliationAttributes = included.map(i =>{ if(i.type === affiliation.type && i.id === affiliation.id) attributes += i.attributes.name})
+            return attributes
+        })
+
+
+
+        return(
+            <tr key={person.id}>
+                <td>{ capitalize(person.attributes.first_name) }</td>
+                <td>{ capitalize(person.attributes.last_name) }</td>
+                <td><Locations data={locations}/></td>
+                <td>{ capitalize(person.attributes.species) }</td>
+                <td>{ capitalize(person.attributes.gender) }</td>
+                <td><Affiliations data = {affiliations}/></td>
+                <td>{ capitalize(person.attributes.weapon) }</td>
+                <td>{ capitalize(person.attributes.vehicle) }</td>
+            </tr>
+            )
+            })
+
   return (
         <>
             <form id="csv-form" className="col-md-6">
@@ -27,36 +76,7 @@ function TableList() {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                    <td>Darth</td>
-                    <td>Vadar</td>
-                    <td>Death Star, Tatooine</td>
-                    <td>Human</td>
-                    <td>Male</td>
-                    <td>Sith</td>
-                    <td>Lightsaber</td>
-                    <td>Tiefighter</td>
-                    </tr>
-                    <tr>
-                    <td>Darth</td>
-                    <td>Vadar</td>
-                    <td>Death Star, Tatooine</td>
-                    <td>Human</td>
-                    <td>Male</td>
-                    <td>Sith</td>
-                    <td>Lightsaber</td>
-                    <td>Tiefighter</td>
-                    </tr>
-                    <tr>
-                    <td>Darth</td>
-                    <td>Vadar</td>
-                    <td>Death Star, Tatooine</td>
-                    <td>Human</td>
-                    <td>Male</td>
-                    <td>Sith</td>
-                    <td>Lightsaber</td>
-                    <td>Tiefighter</td>
-                    </tr>
+                    {lists}
                 </tbody>
                 </table>
             </div>
