@@ -1,17 +1,20 @@
 class Api::V1::PeopleController < ApplicationController
   protect_from_forgery with: :null_session
-  def options
-    @options = {include: [:locations, :affiliations]}
-  end
+  
 
   def index
-    people = Person.all
+    people = Person.page(params[:page]).per(params[:limit])
+
+    options = {links: {
+      total_page: people.total_pages
+    }}
+
     render json: PersonSerializer.new(people, options).serialized_json
   end
 
   def show
     person = Person.find_by(id: params[:id])
-    render json: PersonSerializer.new(person, options).serialized_json
+    render json: PersonSerializer.new(person).serialized_json
   end
 
   def create
@@ -24,7 +27,7 @@ class Api::V1::PeopleController < ApplicationController
 
       create_or_delete_people_locations_affiations(person, params[:location], params[:affiliations])
       
-      render json: PersonSerializer.new(person, options).serialized_json
+      render json: PersonSerializer.new(person).serialized_json
     else
       render json: { error: person.errors.messages }, status: 422
     end

@@ -4,9 +4,9 @@ function Affiliations({data}) {
 
     const lists = data.map(list =>{
         return (
-            <span key = { list } className="m-1">
+            <span key = { list.id } className="m-1">
             {
-                list
+                list.name
             }
             </span>
         )

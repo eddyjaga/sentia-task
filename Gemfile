@@ -68,3 +68,5 @@ group :development do
 end
 # fast json api for my api
 gem 'fast_jsonapi', '~> 1.5'
+
+gem 'kaminari', '~> 1.2', '>= 1.2.2'
