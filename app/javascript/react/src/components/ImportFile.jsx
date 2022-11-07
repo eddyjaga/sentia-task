@@ -5,24 +5,37 @@ const baseUrl = 'http://localhost:3000/api/v1/people'
 let success, error = 0
 const ImportFile = () => {
     const [csvFile, setCsvFile] = useState()
+    const [errorCount, setErrorCount] = useState(0)
+    const [successCount, setSuccessCount] = useState(0)
 
-    const processCSV = (str, delim=',') => {
+    const processCSV = (str, delim=',')=>{
         // header
         const headers = splitHeaders(str)
         // rows
         const rows = str.slice(str.indexOf('\r\n')+1).split('\r\n');
         
         const newArray = rows.map(row =>{
+            
             if (row.indexOf('"') !== -1) row = replaceRange(row, row.indexOf('"')+1, row.indexOf('"',row.indexOf('"')+1,','))
             const values = splitFirstAndLastName(row.split(delim))
             const eachObject = headers.reduce((obj, header, i)=>{
                 obj[header] = values[i].trim();
                 return obj
             }, {})
-            Axios.post(baseUrl, eachObject).then(response=>{
+
+            Axios.post(baseUrl, eachObject).then(resp =>{
+                console.log(resp.status)
+            }).catch(resp=>{
                 
-           })
+                console.log(resp.status)
+
+            }, error=>{
+                console.log(error)
+            })
+            
         })
+
+        
 
     }
 
