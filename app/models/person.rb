@@ -16,6 +16,4 @@ class Person < ApplicationRecord
         self.first_name.downcase!
         self.last_name.downcase!
      end
-
-     ransack_alias :location, :affiliation
 end

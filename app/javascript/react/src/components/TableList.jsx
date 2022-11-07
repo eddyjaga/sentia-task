@@ -72,12 +72,12 @@ function TableList() {
                 .then(resp => {
                     setPeople(generateData(resp.data.data))
                     setPageCount(resp.data.links.total_page)
-                    console.log(resp.data.links.total_page)
                 })
                 .catch(resp => console.log(resp))
         }
 
         const handlePageClick = async (data)=>{
+            setClickedCol("")
             let currentPage = data.selected + 1
             const peopleFormServer = await fetchPeople(currentPage)
 
@@ -90,12 +90,15 @@ function TableList() {
         }
 
         const handleEnterKeyPressed = async (event) =>{
+            
             if(event.key === "Enter"){
+                setClickedCol("")
                 const peopleFormServer = await fetchPeople(1)
             }
         }
 
         const handleClickSearch = async ()=>{
+            setClickedCol("")
             const peopleFormServer = await fetchPeople(1)
         }
 

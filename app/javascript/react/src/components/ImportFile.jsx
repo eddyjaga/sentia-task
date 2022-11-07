@@ -5,8 +5,6 @@ const baseUrl = 'http://localhost:3000/api/v1/people'
 let success, error = 0
 const ImportFile = () => {
     const [csvFile, setCsvFile] = useState()
-    const [errorCount, setErrorCount] = useState(0)
-    const [successCount, setSuccessCount] = useState(0)
 
     const processCSV = (str, delim=',')=>{
         // header
@@ -34,7 +32,9 @@ const ImportFile = () => {
             })
             
         })
+        
 
+        window.location.reload(false);
         
 
     }
@@ -74,6 +74,7 @@ const ImportFile = () => {
     const submit = () => {
 
         const file = csvFile
+        setCsvFile("")
         const reader = new FileReader()
 
         reader.onload = function(e){
@@ -85,7 +86,7 @@ const ImportFile = () => {
     
 
     return (
-        <form id="csv-form" className="col-md-6 col-xs-12">
+        <form id="csv-form" className="col-md-6 col-xs-12" action="/">
             <div className="input-group">
                 <input
                     className="form-control"
