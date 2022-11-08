@@ -52,7 +52,7 @@ rails server
 #### Get items
 
 ```http
-  GET /api/v1/people
+  http://localhost:3000/api/v1/people
 ```
 
 | Parameter | Type     | Description                |
@@ -64,7 +64,7 @@ rails server
 #### Post item
 
 ```http
-  POST /api/v1/people
+  http://localhost:3000/api/v1/people
 ```
 
 | Parameter | Type     | Description                       |
