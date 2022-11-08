@@ -2,17 +2,19 @@ import React, { useState, useEffect } from 'react'
 import Axios from 'axios'
 
 const baseUrl = 'http://localhost:3000/api/v1/people'
-let success, error = 0
+
 const ImportFile = () => {
     const [csvFile, setCsvFile] = useState()
 
-    const processCSV = (str, delim=',')=>{
+    const processCSV = async (str, delim=',')=>{
+        let successmg = 0
+        let errormsg = 0
         // header
         const headers = splitHeaders(str)
         // rows
         const rows = str.slice(str.indexOf('\r\n')+1).split('\r\n');
         
-        const newArray = rows.map(row =>{
+        const newArray = rows.map(async row =>{
             
             if (row.indexOf('"') !== -1) row = replaceRange(row, row.indexOf('"')+1, row.indexOf('"',row.indexOf('"')+1,','))
             const values = splitFirstAndLastName(row.split(delim))
@@ -21,22 +23,29 @@ const ImportFile = () => {
                 return obj
             }, {})
 
-            Axios.post(baseUrl, eachObject).then(resp =>{
-                console.log(resp.status)
-            }).catch(resp=>{
-                
-                console.log(resp.status)
-
-            }, error=>{
-                console.log(error)
-            })
+            let suc = await postDataToApi(eachObject)
+            
             
         })
-        
 
-        window.location.reload(false);
-        
+        setTimeout('window.location.reload()', 1000);
+    }
 
+    const postDataToApi = (array)=>{
+        return Axios.post(baseUrl, array).then((response) => {
+            if(response.status === 200){
+                return true
+            }else{
+                return false
+            }
+        }).catch((error) => {
+
+            return false
+        })
+        .then((resultBoolean) => {
+
+            return resultBoolean 
+        });
     }
 
     //split headers

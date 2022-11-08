@@ -66,6 +66,7 @@ group :development do
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
 end
+
 # fast json api for my api
 gem 'fast_jsonapi', '~> 1.5'
 
