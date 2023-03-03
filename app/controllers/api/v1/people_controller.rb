@@ -3,7 +3,7 @@ class Api::V1::PeopleController < ApplicationController
   
 
   def index
-
+    #index controller
     if params[:q].present?
       search = '%'+params[:q]+'%'
       people = Person.joins(:locations, :affiliations)
